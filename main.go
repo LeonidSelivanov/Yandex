@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"strconv"
-	"strings"
 )
 
 var (
@@ -20,7 +19,10 @@ func Calc(expression string) (float64, error) {
 	if len(expression) == 0 {
 		return 0, errFooEmmptyExpression
 	}
-	tokens := strings.Fields(expression)
+	var tokens []string
+	for _, char := range expression {
+		tokens = append(tokens, string(char))
+	}
 	rpnTokens, err := convertToRPN(tokens)
 	if err != nil {
 		return 0, err
