@@ -24,7 +24,7 @@ func TestCalc(t *testing.T) {
 			err: nil,
 		},
 		{
-			in: "",
+			in:  "",
 			out: 0,
 			err: errors.New("ErrFoo Emmpty expression"),
 		},
