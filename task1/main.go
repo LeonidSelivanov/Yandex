@@ -5,9 +5,7 @@ import (
 	"strconv"
 )
 
-var (
-	errFoo = errors.New("error!")
-)
+var errFoo = errors.New("error!")
 
 func Calc(expression string) (float64, error) {
 	if len(expression) == 0 {
