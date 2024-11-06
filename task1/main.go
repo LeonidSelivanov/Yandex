@@ -6,18 +6,12 @@ import (
 )
 
 var (
-	errFooEmmptyExpression             = errors.New("ErrFoo Emmpty expression")
-	errFooMismatchedParentheses        = errors.New("ErrFoo Mismatched parentheses")
-	errFooInvalidToken                 = errors.New("ErrFoo Invalid token")
-	errFooNotEnoughOperandsForOperator = errors.New("ErrFoo Not enough operands for operator")
-	errFooDivisionByZero               = errors.New("ErrFoo Division by zero")
-	errFooInvalidOperator              = errors.New("ErrFoo Invalid operator")
-	errFooInvalidExpression            = errors.New("ErrFoo Invalid expression")
+	errFoo = errors.New("error!")
 )
 
 func Calc(expression string) (float64, error) {
 	if len(expression) == 0 {
-		return 0, errFooEmmptyExpression
+		return 0, errFoo
 	}
 	var tokens []string
 	for _, char := range expression {
@@ -54,7 +48,7 @@ func convertToRPN(tokens []string) ([]string, error) {
 				stack = stack[:len(stack)-1]
 			}
 			if len(stack) == 0 {
-				return nil, errFooMismatchedParentheses
+				return nil, errFoo
 			}
 			stack = stack[:len(stack)-1]
 		} else if _, ok := operators[token]; ok {
@@ -67,12 +61,12 @@ func convertToRPN(tokens []string) ([]string, error) {
 			}
 			stack = append(stack, token)
 		} else {
-			return nil, errFooInvalidToken
+			return nil, errFoo
 		}
 	}
 	for len(stack) > 0 {
 		if stack[len(stack)-1] == "(" {
-			return nil, errFooMismatchedParentheses
+			return nil, errFoo
 		}
 		output = append(output, stack[len(stack)-1])
 		stack = stack[:len(stack)-1]
@@ -88,7 +82,7 @@ func evaluateRPN(tokens []string) (float64, error) {
 			stack = append(stack, num)
 		} else {
 			if len(stack) < 2 {
-				return 0, errFooNotEnoughOperandsForOperator
+				return 0, errFoo
 			}
 			b := stack[len(stack)-1]
 			a := stack[len(stack)-2]
@@ -103,17 +97,17 @@ func evaluateRPN(tokens []string) (float64, error) {
 				result = a * b
 			case "/":
 				if b == 0 {
-					return 0, errFooDivisionByZero
+					return 0, errFoo
 				}
 				result = a / b
 			default:
-				return 0, errFooInvalidOperator
+				return 0, errFoo
 			}
 			stack = append(stack, result)
 		}
 	}
 	if len(stack) != 1 {
-		return 0, errFooInvalidExpression
+		return 0, errFoo
 	}
 	return stack[0], nil
 }
